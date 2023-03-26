@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<h2 th:text="${name}">List of Seed Starters</h2>
+
+<form th:method="POST"  th:action="@{/admin/users}" th:object="${user}">
+  <label for="email">Enter email: </label>
+  <input type="text" th:field="*{email}" id="email"/>
+  <br/>
+
+  <label for="nickname">Enter nickname: </label>
+  <input type="text" th:field="*{nickname}" id="nickname"/>
+  <br/>
+
+  <label for="password">Enter password: </label>
+  <input type="text" th:field="*{password}" id="password"/>
+  <br/>
+
+  <label for="role">Enter role: </label>
+  <select name="roles" th:field="*{role}" id="role">
+    <div th:each="role : ${roles}">
+      <option th:value="${role}" th:text="${role}"></option>
+    </div>
+
+  </select>
+
+  <br/>
+
+  <input type="submit" value="Create!"/>
+</form>
+
+<div th:each="user : ${users}">
+  <th:block th:if="${user.id == id_current_user}">
+    <p style="color: red;">CU</p>
+  </th:block>
+  <div style="margin:0;padding:0;">
+    <p th:text="${user.id}">id</p>
+    <p th:text="${user.nickname}">name</p>
+    <p th:text="${user.role}">role</p>
+    <p th:text="${user.email}">email</p>
+    <p th:text="${user.password}">password</p>
+    <br>
+  </div>
+</div>
+
+
+
+</body>
+</html>

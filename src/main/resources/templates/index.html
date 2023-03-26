@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2 th:text="${name}">List of Seed Starters</h2>
+
+    <tr th:each="string : ${strings}">
+        <p th:text="${string}">13/01/2011</p>
+    </tr>
+</body>
+</html>
