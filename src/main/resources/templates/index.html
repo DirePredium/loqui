@@ -1,14 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Hello World!</title>
 </head>
 <body>
-    <h2 th:text="${name}">List of Seed Starters</h2>
+    <div th:replace="fragments/header :: header"></div>
 
-    <tr th:each="string : ${strings}">
-        <p th:text="${string}">13/01/2011</p>
-    </tr>
+    <div th:if="${#authorization.expression('isAuthenticated()')}">
+        <h1 th:inline="text">Hello <span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h1>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+    </div>
+
+    <div th:if="${!#authorization.expression('isAuthenticated()')}">
+        <a th:href="@{/login}">Войти</a>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Log In"/>
+        </form>
+    </div>
+
+<div sec:authorize="hasRole('USER')">
+    <p>This content is only visible to users with USER.</p>
+</div>
+<div sec:authorize="hasRole('ADMIN')">
+    <p>This content is only visible to users with ADMIN.</p>
+</div>
+
+    <a th:href="@{/admin/users}">Admin users</a>
+
+    <div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

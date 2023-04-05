@@ -6,13 +6,8 @@
 </head>
 <body>
   <div th:replace="fragments/header :: header"></div>
-  <p>Some text</p>
-  <div sec:authorize="hasRole('USER')">
-    <p>Good evening User!</p>
-  </div>
-  <div sec:authorize="hasRole('ADMIN')">
-    <p>Wow, Admin, hello!</p>
-  </div>
+  <h1>Page some user</h1>
+  <p th:text="${user.username}"></p>
 
   <div th:replace="fragments/footer :: footer"></div>
 </body>

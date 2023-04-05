@@ -2,52 +2,56 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Users</title>
 </head>
 <body>
-<h2 th:text="${name}">List of Seed Starters</h2>
+  <div th:replace="fragments/header :: header"></div>
+  <h2 th:text="${name}">List of Seed Starters</h2>
 
-<form th:method="POST"  th:action="@{/admin/users}" th:object="${user}">
-  <label for="email">Enter email: </label>
-  <input type="text" th:field="*{email}" id="email"/>
-  <br/>
+  <form th:method="POST"  th:action="@{/admin/users}" th:object="${new_user}">
 
-  <label for="nickname">Enter nickname: </label>
-  <input type="text" th:field="*{nickname}" id="nickname"/>
-  <br/>
+    <label for="username">Enter username: </label>
+    <input type="text" th:field="*{username}" id="username"/>
+    <br/>
 
-  <label for="password">Enter password: </label>
-  <input type="text" th:field="*{password}" id="password"/>
-  <br/>
+    <label for="password">Enter password: </label>
+    <input type="text" th:field="*{password}" id="password"/>
+    <br/>
 
-  <label for="role">Enter role: </label>
-  <select name="roles" th:field="*{role}" id="role">
-    <div th:each="role : ${roles}">
-      <option th:value="${role}" th:text="${role}"></option>
-    </div>
-
-  </select>
-
-  <br/>
-
-  <input type="submit" value="Create!"/>
-</form>
-
-<div th:each="user : ${users}">
-  <th:block th:if="${user.id == id_current_user}">
-    <p style="color: red;">CU</p>
-  </th:block>
-  <div style="margin:0;padding:0;">
-    <p th:text="${user.id}">id</p>
-    <p th:text="${user.nickname}">name</p>
-    <p th:text="${user.role}">role</p>
-    <p th:text="${user.email}">email</p>
-    <p th:text="${user.password}">password</p>
-    <br>
-  </div>
-</div>
+    <input type="submit" value="Create!"/>
+  </form>
 
 
 
+  <table>
+    <thead>
+    <tr>
+      <th>id</th>
+      <th>active</th>
+      <th>username</th>
+      <th>role</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+      <td th:class="${user.id == id_current_user} ? 'green' : 'red'"  th:text="${user.id}"></td>
+      <td th:text="${user.active}"></td>
+      <td th:text="${user.username}"></td>
+      <td >
+        <div th:each="role : ${user.roles}">
+          <p th:text="${role}"></p>
+        </div>
+      </td>
+      <td><a th:href="@{/admin/users/{id}(id=${user.getId()})}"><button th:text="Change"></button></a></td>
+      <td>
+        <form th:method="DELETE" th:action="@{/admin/users/{id}/delete(id=${user.getId()})}">
+          <input type="submit" value="Delete"/>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

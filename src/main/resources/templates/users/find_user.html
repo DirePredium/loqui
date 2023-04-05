@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:replace="fragments/header :: header"></div>
+  <p></p>
+<div class="search_user">
+    <div >
+        <form th:method="GET" th:action="@{users}">
+            <label for="username">Search users:</label>
+            <input type="text" id="username" name="username">
+
+            <input type="submit" value="Search"/>
+        </form>
+    </div>
+    <div th:each="user : ${users_find}">
+        <p th:text="${user.id}"></p>
+        <a th:href="@{/users/{id}(id=${user.id})}" th:text="'@'+${user.username}"></a>
+    </div>
+</div>
+
+  <div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

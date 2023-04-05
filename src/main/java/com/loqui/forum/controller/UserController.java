@@ -1,31 +1,45 @@
 package com.loqui.forum.controller;
 
 import com.loqui.forum.entity.User;
-import com.loqui.forum.repository.UserRepository;
-import com.loqui.forum.service.UserServise;
+import com.loqui.forum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
-import java.util.function.Supplier;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
-@RequestMapping(path = "/user")
+@RequestMapping(path = "/users")
 public class UserController {
 
-    UserServise userServise;
+    UserService userService;
     @Autowired
-    public UserController(UserServise userServise) {
-        this.userServise = userServise;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @PostMapping
-    private void save(){
+    @GetMapping("/{id}")
+    public String showUserById(Model model, @PathVariable("id") Long id){
+        Optional<User> optionalUser = userService.findById(id);
 
+        if(optionalUser.isEmpty()) {
+            model.addAttribute("errorMessage", "Can`t define user");
+            return "error";
+        }
+        model.addAttribute("user", optionalUser.get());
+        return "users/user";
     }
+
+    @GetMapping
+    public String index(Model model, @RequestParam(required = false, name = "username") String username){
+        List<User> users = null;
+        if(username != null && !username.isEmpty()){
+            users = userService.findByUsernameContaining(username);
+        }
+        model.addAttribute("users_find", users);
+        return "users/find_user";
+    }
+
 }
