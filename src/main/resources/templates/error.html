@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>Error</title>
+    <th:block th:insert="fragments/head :: head"></th:block>
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
+<p>Something went wrong</p>
 <p th:text="${error}"></p>
 <div th:replace="fragments/footer :: footer"></div>
 </body>

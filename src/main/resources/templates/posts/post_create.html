@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <th:block th:insert="fragments/head :: head"></th:block>
 </head>
 <body>
-  <div th:replace="fragments/header :: header"></div>
-  <a th:href="@{/posts}">Posts</a>
-  <form th:method="POST"  th:action="@{/posts}" th:object="${post}">
+<div th:replace="fragments/header :: header"></div>
+<a th:href="@{/posts}">Posts</a>
+<form th:method="POST" th:action="@{/posts}" th:object="${post}" enctype="multipart/form-data">
     <input hidden="true" th:field="*{id}" id="id"/>
 
     <label for="title">Enter title: </label>
@@ -17,9 +16,12 @@
     <label for="contain">Enter contain: </label>
     <input type="text" th:field="*{contain}" id="contain"/>
     <br/>
-    <input type="submit" value="Create"/>
-  </form>
 
-  <div th:replace="fragments/footer :: footer"></div>
+    <input type="file" name="file">
+    <br/>
+    <input type="submit" value="Create"/>
+</form>
+
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

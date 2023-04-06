@@ -15,6 +15,8 @@ public class Image {
     private Long id;
     @Basic(optional = false)
     private String path;
+    @Basic(optional = false)
+    private String name;
     @ManyToOne
     @JoinColumn(name="post_id", nullable=false)
     private Post post;

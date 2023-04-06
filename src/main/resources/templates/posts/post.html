@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
-    <title>Hello World!</title>
+    <th:block th:insert="fragments/head :: head"></th:block>
 </head>
 <body>
     <div th:replace="fragments/header :: header"></div>
@@ -15,11 +15,10 @@
         <p  th:utext="${post.contain}"></p>
         <p th:text="${#temporals.format(post.dateCreate, 'dd-MM-yyyy')}"> </p>
 <!--        <p th:text="${post.rate}"></p>-->
-<!--        <div th:each="image : ${post.images}">-->
-<!--            <h3 th:text="${image}"></h3>-->
-<!--        </div>-->
         <a th:href="@{/users/{id}(id=${post.user.id})}" th:text="'@'+${post.user.username}"></a>
-<!--        <p th:text="post.id"></p>-->
+        <div th:each="image : ${post.images}">
+            <img th:src="@{/img/} + ${image.name}" th:alt="${image.name}" height="100px">
+        </div>
     </div>
 
     <div th:replace="fragments/footer :: footer"></div>

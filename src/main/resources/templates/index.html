@@ -2,34 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
-    <title>Hello World!</title>
+    <th:block th:insert="fragments/head :: head"></th:block>
 </head>
 <body>
-    <div th:replace="fragments/header :: header"></div>
-
-    <div th:if="${#authorization.expression('isAuthenticated()')}">
-        <h1 th:inline="text">Hello <span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h1>
-        <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Sign Out"/>
-        </form>
-    </div>
-
-    <div th:if="${!#authorization.expression('isAuthenticated()')}">
-        <a th:href="@{/login}">Войти</a>
-        <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Log In"/>
-        </form>
-    </div>
-
-<div sec:authorize="hasRole('USER')">
-    <p>This content is only visible to users with USER.</p>
-</div>
-<div sec:authorize="hasRole('ADMIN')">
-    <p>This content is only visible to users with ADMIN.</p>
-</div>
-
-    <a th:href="@{/admin/users}">Admin users</a>
-
-    <div th:replace="fragments/footer :: footer"></div>
+<div th:replace="fragments/header :: header"></div>
+<h1><i><b>Loqui</b></i> forum greetings you!</h1>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>
