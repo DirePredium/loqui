@@ -5,22 +5,23 @@
     <th:block th:insert="fragments/head :: head"></th:block>
 </head>
 <body>
-    <div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
     <a th:href="@{/posts/create}">Create new</a>
     <h1>Posts: </h1>
 
     <div class="post" th:each="post : ${posts}">
         <p th:text="${post.id}"></p>
         <p th:text="${post.title}"></p>
-        <p  th:utext="${post.contain}"></p>
-        <p th:text="${#temporals.format(post.dateCreate, 'dd-MM-yyyy')}"> </p>
-<!--        <p th:text="${post.rate}"></p>-->
+        <p th:utext="${post.contain}"></p>
+        <p th:text="${#temporals.format(post.dateCreate, 'dd-MM-yyyy')}"></p>
+        <!--        <p th:text="${post.rate}"></p>-->
         <a th:href="@{/users/{id}(id=${post.user.id})}" th:text="'@'+${post.user.username}"></a>
         <div th:each="image : ${post.images}">
             <img th:src="@{/img/} + ${image.name}" th:alt="${image.name}" height="100px">
         </div>
     </div>
-
-    <div th:replace="fragments/footer :: footer"></div>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>
