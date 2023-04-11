@@ -19,16 +19,16 @@
 
     <input type="submit" value="Create!"/>
   </form>
-
-
-
-  <table>
-    <thead>
+<div class="col-lg-6 col-sm-12 table-responsive">
+  <table class="table table-bordered">
+    <thead class="thead-dark">
     <tr>
       <th>id</th>
       <th>active</th>
       <th>username</th>
       <th>role</th>
+      <th></th>
+      <th></th>
     </tr>
     </thead>
     <tbody>
@@ -38,7 +38,7 @@
       <td th:text="${user.username}"></td>
       <td >
         <div th:each="role : ${user.roles}">
-          <p th:text="${role}"></p>
+          <h6 th:text="${role}"></h6>
         </div>
       </td>
       <td><a th:href="@{/admin/users/{id}(id=${user.getId()})}"><button th:text="Change"></button></a></td>
@@ -50,7 +50,7 @@
     </tr>
     </tbody>
   </table>
-
+</div>
   <div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

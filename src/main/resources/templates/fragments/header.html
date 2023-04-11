@@ -1,24 +1,44 @@
-<header th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
-  <nav>
-    <ul>
-      <li><a th:href="@{/}">Main</a></li>
-      <li><a th:href="@{/posts}">Posts</a></li>
-      <li><a th:href="@{/users}">Users</a></li>
-      <li sec:authorize="hasAuthority('ADMIN')">
-        <a th:href="@{/admin/users}">Admin users</a>
-      </li>
-      <li>
-        <div th:if="${#authorization.expression('isAuthenticated()')}">
-          <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Sign Out"/>
-          </form>
+<header class="p-3 text-bg-dark" th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml"
+        xmlns:sec="http://www.w3.org/1999/xhtml">
+
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a class="navbar-brand" th:href="@{/}" style="font-size: 20px"><i class="bi me-2"><b>Loqui</b></i></a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a class="nav-link px-2 text-white" th:href="@{/posts}">Posts</a></a></li>
+                <li><a class="nav-link px-2 text-white" th:href="@{/users}">Users</a></li>
+                <li sec:authorize="hasAuthority('ADMIN')"><a class="nav-link px-2 text-white" th:href="@{/admin/users}">Admin
+                    users</a></li>
+                <li><a class="nav-link px-2 text-white">About</a></li>
+            </ul>
+
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" id="searchForm">
+                <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..."
+                       aria-label="Search">
+
+            </form>
+            <button form="signIn" class="btn btn-outline-success my-2 my-sm-0  me-2" type="submit">Search</button>
+
+            <div class="text-end">
+                <div th:if="${#authorization.expression('isAuthenticated()')}">
+                    <form th:action="@{/logout}" method="post" id="signOut">
+                        <!--              <input type="submit" value="Sign Out" class="btn btn-outline-light me-2"/>-->
+                    </form>
+                    <button form="signOut" type="submit" class="btn btn-warning">Sign-out</button>
+                </div>
+
+                <div th:if="${!#authorization.expression('isAuthenticated()')}">
+                    <form th:action="@{/}" method="post" id="signIn">
+                        <!--              <input type="submit" value="Sign Out" class="btn btn-outline-light me-2"/>-->
+                    </form>
+                    <form th:action="@{/login}" method="get" id="loginForm">
+                        <!--              <input type="submit" value="Log In"/>-->
+                    </form>
+                    <button form="loginForm" type="submit" class="btn btn-outline-light me-2">Login</button>
+                    <button form="signIn" type="submit" class="btn btn-warning">Sign-in</button>
+                </div>
+            </div>
         </div>
-        <div th:if="${!#authorization.expression('isAuthenticated()')}">
-          <form th:action="@{/login}" method="get">
-            <input type="submit" value="Log In"/>
-          </form>
-        </div>
-      </li>
-    </ul>
-  </nav>
+    </div>
 </header>
