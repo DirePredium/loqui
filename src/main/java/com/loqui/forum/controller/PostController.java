@@ -63,7 +63,7 @@ public class PostController {
     @PostMapping()
     public String save(@AuthenticationPrincipal User user,
                        @ModelAttribute("post") Post post,
-                       @RequestParam("file") MultipartFile[] files) throws IOException {
+                       @RequestParam(value = "file", required = false) MultipartFile[] files) throws IOException {
         post.setDateCreate();
         post.setUser(user);
         postService.save(post);
@@ -74,9 +74,11 @@ public class PostController {
                 uploadDir.mkdir();
             }
             for (MultipartFile file : files) {
-                String fileName = createUniqueFileName(file.getOriginalFilename());
-                file.transferTo(new File(uploadDir, fileName));
-                saveImageToDB(fileName, post);
+                if(file != null && !Objects.equals(file.getOriginalFilename(), "")){
+                    String fileName = createUniqueFileName(file.getOriginalFilename());
+                    file.transferTo(new File(uploadDir, fileName));
+                    saveImageToDB(fileName, post);
+                }
             }
         }
 

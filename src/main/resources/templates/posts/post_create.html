@@ -75,7 +75,7 @@ createButton.addEventListener('click', () => {
   });
 
   // если ни одно поле ввода для файла не заполнено, показываем сообщение об ошибке
-  if (!isAtLeastOneFileSelected) {
+  if (!isAtLeastOneFileSelected && fileInputContainer.children.length != 0) {
     alert('Please select at least one file.');
     event.preventDefault();
   }
