@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <th:block th:insert="fragments/head :: head"></th:block>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+    <a th:href="@{/posts/create}">Create new</a>
+    <h1>Posts: </h1>
+
+    <div class="post border-top p-3" th:each="post : ${posts}">
+        <a th:href="@{/posts/{id}(id=${post.id})}"><h4 th:text="${post.title}"></h4></a>
+        <div th:with="maxContainCharacters=10">
+            <div th:utext="${#strings.length(post.contain) > maxContainCharacters ? #strings.substring(post.contain,0,maxContainCharacters) + '...' : post.contain}"></div>
+        </div>
+
+        <!--        <p th:text="${post.rate}"></p>-->
+        <div class="container">
+            <div class="row">
+                <div class="col-md">
+                    <div class="d-flex flex-row col-md">
+                        <div th:each="image : ${post.images}" >
+                            <a th:href="@{/img/} + ${image.name}">
+                                <img th:src="@{/img/} + ${image.name}" th:alt="${image.name}" height="100px">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="col-md text-end">
+                        <p th:text="${#temporals.format(post.dateCreate, 'dd-MM-yyyy')}"></p>
+                        <a th:href="@{/users/{id}(id=${post.user.id})}" th:text="'@'+${post.user.username}"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

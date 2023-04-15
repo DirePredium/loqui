@@ -4,9 +4,10 @@
     <th:block th:insert="fragments/head :: head"></th:block>
 </head>
 <body>
-    <div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
     <a th:href="@{/admin/users}">Users</a>
-    <form th:method="POST"  th:action="@{/admin/users}" th:object="${user}">
+    <form th:method="POST" th:action="@{/admin/users}" th:object="${user}">
         <input hidden="true" th:field="*{id}" id="id"/>
 
         <label for="username">Enter username: </label>
@@ -33,7 +34,7 @@
 
         <input type="submit" value="Update"/>
     </form>
-
-    <div th:replace="fragments/footer :: footer"></div>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

@@ -5,8 +5,10 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
-<p>Something went wrong</p>
-<p th:text="${error}"></p>
+<div class="container">
+    <p>Something went wrong</p>
+    <p th:text="${error}"></p>
+</div>
 <div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

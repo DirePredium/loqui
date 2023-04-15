@@ -7,18 +7,25 @@
 <body>
 <div th:replace="fragments/header :: header"></div>
 <div class="container">
-    <a th:href="@{/posts/create}">Create new</a>
-    <h1>Posts: </h1>
-
-    <div class="post" th:each="post : ${posts}">
-        <p th:text="${post.id}"></p>
-        <p th:text="${post.title}"></p>
-        <p th:utext="${post.contain}"></p>
-        <p th:text="${#temporals.format(post.dateCreate, 'dd-MM-yyyy')}"></p>
-        <!--        <p th:text="${post.rate}"></p>-->
-        <a th:href="@{/users/{id}(id=${post.user.id})}" th:text="'@'+${post.user.username}"></a>
-        <div th:each="image : ${post.images}">
-            <img th:src="@{/img/} + ${image.name}" th:alt="${image.name}" height="100px">
+    <h1 th:text="${post.title}" class="border-bottom"></h1>
+    <div  th:utext="${post.contain}"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md">
+                <div class="d-flex flex-row col-md">
+                    <div th:each="image : ${post.images}" >
+                        <a th:href="@{/img/} + ${image.name}">
+                            <img th:src="@{/img/} + ${image.name}" th:alt="${image.name}" height="100px">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="col-md text-end">
+                    <p th:text="${#temporals.format(post.dateCreate, 'dd-MM-yyyy')}"></p>
+                    <a th:href="@{/users/{id}(id=${post.user.id})}" th:text="'@'+${post.user.username}"></a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

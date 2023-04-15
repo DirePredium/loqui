@@ -2,9 +2,11 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <th:block th:insert="fragments/head :: head"></th:block>
+
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
+<div class="container">
 <a th:href="@{/posts}">Posts</a>
 <form th:method="POST" th:action="@{/posts}" th:object="${post}" enctype="multipart/form-data">
     <input hidden="true" th:field="*{id}" id="id"/>
@@ -16,12 +18,67 @@
     <label for="contain">Enter contain: </label>
     <input type="text" th:field="*{contain}" id="contain"/>
     <br/>
-
-    <input type="file" name="file">
+    <button name="button" type="button" id="add-file-button">Add</button>
     <br/>
-    <input type="submit" value="Create"/>
-</form>
+    <div id="file-input-container" class="d-flex flex-column">
 
+    </div>
+    <br/>
+    <input type="submit" id="create-button" value="Create"/>
+</form>
+</div>
 <div th:replace="fragments/footer :: footer"></div>
 </body>
+<script type="text/javascript">
+    console.log("it`s work");
+        // выбираем кнопку "Add file" и поле ввода для файла
+// выбираем кнопку "Add file" и поле ввода для файла
+const addFileButton = document.querySelector('#add-file-button');
+const fileInputContainer = document.querySelector('#file-input-container');
+
+// добавляем обработчик события клика на кнопку "Add file"
+addFileButton.addEventListener('click', () => {
+  // создаем новое поле ввода для файла
+  const newFileInput = document.createElement('input');
+  newFileInput.type = 'file';
+  newFileInput.name = 'file';
+
+  // добавляем новое поле ввода для файла в контейнер
+  fileInputContainer.appendChild(newFileInput);
+
+  // добавляем кнопку "Remove file" рядом с новым полем ввода для файла
+  const removeFileButton = document.createElement('button');
+  removeFileButton.innerText = 'Remove file';
+  removeFileButton.addEventListener('click', () => {
+    // удаляем соответствующее поле ввода для файла
+    fileInputContainer.removeChild(newFileInput);
+    // удаляем кнопку "Remove file"
+    fileInputContainer.removeChild(removeFileButton);
+  });
+  fileInputContainer.appendChild(removeFileButton);
+});
+
+// выбираем кнопку "Create" для отправки формы
+const createButton = document.querySelector('#create-button');
+
+// добавляем обработчик события клика на кнопку "Create"
+createButton.addEventListener('click', () => {
+  // выбираем все поля ввода для файлов
+  const fileInputs = document.querySelectorAll('input[type="file"]');
+
+  // проверяем, что хотя бы одно поле ввода для файла заполнено
+  let isAtLeastOneFileSelected = false;
+  fileInputs.forEach((fileInput) => {
+    if (fileInput.files.length > 0) {
+      isAtLeastOneFileSelected = true;
+    }
+  });
+
+  // если ни одно поле ввода для файла не заполнено, показываем сообщение об ошибке
+  if (!isAtLeastOneFileSelected) {
+    alert('Please select at least one file.');
+    event.preventDefault();
+  }
+});
+    </script>
 </html>

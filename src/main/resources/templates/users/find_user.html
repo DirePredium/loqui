@@ -4,23 +4,26 @@
     <th:block th:insert="fragments/head :: head"></th:block>
 </head>
 <body>
-    <div th:replace="fragments/header :: header"></div>
-  <p></p>
-<div class="search_user">
-    <div >
-        <form th:method="GET" th:action="@{users}">
-            <label for="username">Search users:</label>
-            <input type="text" id="username" name="username">
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
 
-            <input type="submit" value="Search"/>
-        </form>
-    </div>
-    <div th:each="user : ${users_find}">
-        <p th:text="${user.id}"></p>
-        <a th:href="@{/users/{id}(id=${user.id})}" th:text="'@'+${user.username}"></a>
+
+    <p></p>
+    <div class="search_user">
+        <div>
+            <form th:method="GET" th:action="@{users}">
+                <label for="username">Search users:</label>
+                <input type="text" id="username" name="username">
+
+                <input type="submit" value="Search"/>
+            </form>
+        </div>
+        <div th:each="user : ${users_find}">
+            <p th:text="${user.id}"></p>
+            <a th:href="@{/users/{id}(id=${user.id})}" th:text="'@'+${user.username}"></a>
+        </div>
     </div>
 </div>
-
-  <div th:replace="fragments/footer :: footer"></div>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

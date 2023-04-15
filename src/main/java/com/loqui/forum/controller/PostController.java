@@ -39,6 +39,18 @@ public class PostController {
     public String index(Model model){
         List<Post> list = postService.findAll();
         model.addAttribute("posts", list);
+        return "posts/posts";
+    }
+
+    @GetMapping("/{id}")
+    public String showPost(Model model, @PathVariable("id") Long id){
+        Optional<Post> optionalPost = postService.findById(id);
+
+        if(optionalPost.isEmpty()) {
+            model.addAttribute("errorMessage", "Can`t define user");
+            return "error";
+        }
+        model.addAttribute("post", optionalPost.get());
         return "posts/post";
     }
 
@@ -51,28 +63,37 @@ public class PostController {
     @PostMapping()
     public String save(@AuthenticationPrincipal User user,
                        @ModelAttribute("post") Post post,
-                       @RequestParam("file") MultipartFile file) throws IOException {
+                       @RequestParam("file") MultipartFile[] files) throws IOException {
         post.setDateCreate();
         post.setUser(user);
         postService.save(post);
 
-        if(file != null){
+        if(files != null && files.length != 0){
             File uploadDir = new File(uploadPath);
             if(!uploadDir.exists()){
                 uploadDir.mkdir();
             }
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFileName = uuidFile + "." + file.getOriginalFilename();
-            file.transferTo(new File(uploadDir, resultFileName));
-
-            Image image = new Image();
-            image.setPath(uploadPath);
-            image.setName(resultFileName);
-            image.setPost(post);
-            imageService.save(image);
+            for (MultipartFile file : files) {
+                String fileName = createUniqueFileName(file.getOriginalFilename());
+                file.transferTo(new File(uploadDir, fileName));
+                saveImageToDB(fileName, post);
+            }
         }
 
         return "redirect:/posts";
+    }
+
+    private void saveImageToDB(String resultFileName, Post post){
+        Image image = new Image();
+        image.setPath(uploadPath);
+        image.setName(resultFileName);
+        image.setPost(post);
+        imageService.save(image);
+    }
+
+    private String createUniqueFileName(String originalFilename){
+        String uuidFile = UUID.randomUUID().toString();
+        return uuidFile + "." + originalFilename;
     }
 
 }
