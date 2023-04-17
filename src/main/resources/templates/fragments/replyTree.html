@@ -1,0 +1,21 @@
+<div th:fragment="replyTree(replies)">
+    <a href="#" class="reply-link"
+       th:data-csrfname="${_csrf.parameterName}"
+       th:data-csrftoken="${_csrf.token}"
+       th:data-commentid="${reply.id}"
+       th:data-postid="${post.id}">Ответить</a>
+    <ul class="list-group list-group-flush ">
+        <li th:each="reply : ${replies}" class="list-group-item pb-0 pt-0" style="border-bottom-width: 0;">
+            <div class="list-group-item bg-light d-flex justify-content-between">
+                <p class="mb-0" th:text="${reply.text}"></p>
+                <div>
+                    <p th:text="${#temporals.format(reply.dateCreate, 'dd-MM-yyyy')}"></p>
+                    <a th:href="@{/users/{id}(id=${reply.user.id})}" th:text="'@'+${reply.user.username}"></a>
+                </div>
+            </div>
+            <div th:if="${reply.replies}">
+                <div th:replace="fragments/replyTree :: replyTree(${reply.replies})"></div>
+            </div>
+        </li>
+    </ul>
+</div>

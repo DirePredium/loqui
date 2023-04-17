@@ -6,3 +6,6 @@ body {
 	position: sticky;
 	top: 100%;
 }
+.list-group-flush>.list-group-item {
+       border-bottom-width: 0;
+}

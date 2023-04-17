@@ -8,12 +8,12 @@
 <div th:replace="fragments/header :: header"></div>
 <div class="container">
     <h1 th:text="${post.title}" class="border-bottom"></h1>
-    <div  th:utext="${post.contain}"></div>
+    <div th:utext="${post.contain}"></div>
     <div class="container">
         <div class="row">
             <div class="col-md">
                 <div class="d-flex flex-row col-md">
-                    <div th:each="image : ${post.images}" >
+                    <div th:each="image : ${post.images}">
                         <a th:href="@{/img/} + ${image.name}">
                             <img th:src="@{/img/} + ${image.name}" th:alt="${image.name}" height="100px">
                         </a>
@@ -28,7 +28,114 @@
             </div>
         </div>
     </div>
+
+    <div class="pt-5 pb-5">
+        <form th:method="POST" th:action="@{/comments/{postId}(postId=${post.id})}">
+            <div class="form-group">
+                <label for="text">Comment text:</label>
+                <textarea style="resize:none" class="form-control" id="text" name="text"></textarea>
+            </div>
+            <input type="submit" id="create-button" class="btn btn-primary" value="Create"/>
+        </form>
+    </div>
+    <div th:if="${not #lists.isEmpty(tblUserList)}">
+        <h1>
+            Answer:
+        </h1>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item " th:each="reply : ${post.comments}" th:if="${reply.parentComment eq null}">
+            <p class="mb-0 pt-3 pb-3" th:text="${reply.text}"></p>
+            <div th:replace="fragments/replyTree :: replyTree(${reply.replies})"></div>
+        </li>
+    </ul>
+
+
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 </body>
+<script>
+    // получаем все ссылки "ответить"
+var replyLinks = document.querySelectorAll('.reply-link');
+
+// перебираем каждую ссылку
+replyLinks.forEach(function(link) {
+  // при нажатии на ссылку
+  console.log(link.dataset.nameId);
+  link.addEventListener('click', function(e) {
+    var form = link.parentElement.querySelector('form');
+    console.log(form);
+    if(form !== null){
+        link.parentElement.removeChild(form);
+    }
+    e.preventDefault(); // отменяем стандартное поведение ссылки
+
+    // создаем элементы формы
+    form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/comments/' + link.dataset.postid;
+    form.classList.add('reply-form');
+
+    var inputCRSF = document.createElement('input');
+    inputCRSF.type = 'hidden';
+    inputCRSF.name = link.dataset.csrfname;
+    inputCRSF.value = link.dataset.csrftoken;
+    form.appendChild(inputCRSF);
+
+    var input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'commentId';
+    input.value = link.dataset.commentid;
+    form.appendChild(input);
+
+    var div = document.createElement('div');
+    div.classList.add('form-group');
+
+    var label = document.createElement('label');
+    label.textContent = 'Comment text:';
+    label.setAttribute('for', 'text');
+    div.appendChild(label);
+
+    var textarea = document.createElement('textarea');
+    textarea.classList.add('form-control');
+    textarea.setAttribute('style', 'resize:none');
+    textarea.setAttribute('id', 'text');
+    textarea.setAttribute('name', 'text');
+    textarea.setAttribute('placeholder', link.dataset.commentid);
+    div.appendChild(textarea);
+
+    form.appendChild(div);
+
+    var button = document.createElement('input');
+    button.type = 'submit';
+    button.id = 'create-button';
+    button.classList.add('btn');
+    button.classList.add('btn-primary');
+    button.value = 'Create';
+    form.appendChild(button);
+
+    form.addEventListener('submit', function(event) {
+    console.log(textarea);
+        alert("submit");
+      // Check if the textarea is empty
+      if (textarea.value.trim() === '') {
+        // If it is, display a custom error message
+        textarea.setCustomValidity('Please fill out this field');
+      } else {
+        // If it's not, clear any error message
+        textarea.setCustomValidity('');
+      }
+    });
+
+// Add an input event listener to clear any error message as the user types
+textarea.addEventListener('input', function(event) {
+  textarea.setCustomValidity('');
+});
+
+    // добавляем форму после ссылки
+    link.parentElement.prepend(form);
+  });
+});
+
+</script>
 </html>

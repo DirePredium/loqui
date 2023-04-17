@@ -3,12 +3,10 @@ package com.loqui.forum.controller;
 import com.loqui.forum.entity.Image;
 import com.loqui.forum.entity.Post;
 import com.loqui.forum.entity.User;
-import com.loqui.forum.repository.PostRepository;
 import com.loqui.forum.service.ImageService;
 import com.loqui.forum.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/posts")
@@ -47,7 +48,7 @@ public class PostController {
         Optional<Post> optionalPost = postService.findById(id);
 
         if(optionalPost.isEmpty()) {
-            model.addAttribute("errorMessage", "Can`t define user");
+            model.addAttribute("errorMessage", "Can`t define post");
             return "error";
         }
         model.addAttribute("post", optionalPost.get());

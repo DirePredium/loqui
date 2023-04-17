@@ -47,4 +47,6 @@ public class Post {
     public void setDateCreate() {
         this.dateCreate = LocalDate.now();
     }
+    @OneToMany(mappedBy = "post")
+    private Set<Comment> comments;
 }
