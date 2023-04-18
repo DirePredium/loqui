@@ -61,10 +61,8 @@ var replyLinks = document.querySelectorAll('.reply-link');
 // перебираем каждую ссылку
 replyLinks.forEach(function(link) {
   // при нажатии на ссылку
-  console.log(link.dataset.nameId);
   link.addEventListener('click', function(e) {
     var form = link.parentElement.querySelector('form');
-    console.log(form);
     if(form !== null){
         link.parentElement.removeChild(form);
     }
@@ -115,8 +113,6 @@ replyLinks.forEach(function(link) {
     form.appendChild(button);
 
     form.addEventListener('submit', function(event) {
-    console.log(textarea);
-        alert("submit");
       // Check if the textarea is empty
       if (textarea.value.trim() === '') {
         // If it is, display a custom error message
