@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <th:block th:insert="fragments/head :: head"></th:block>
+    <th:block th:insert="~{fragments/head :: head}"></th:block>
 </head>
 <body>
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 <div class="container">
     <h1>Page some user</h1>
     <p th:text="${user.username}"></p>
 
-    <div th:replace="fragments/footer :: footer"></div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </div>
 </body>
 </html>

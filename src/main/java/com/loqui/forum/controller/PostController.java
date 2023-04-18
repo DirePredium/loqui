@@ -2,6 +2,7 @@ package com.loqui.forum.controller;
 
 import com.loqui.forum.entity.Image;
 import com.loqui.forum.entity.Post;
+import com.loqui.forum.entity.Topic;
 import com.loqui.forum.entity.User;
 import com.loqui.forum.service.ImageService;
 import com.loqui.forum.service.PostService;
@@ -15,10 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @RequestMapping("/posts")
@@ -57,7 +55,11 @@ public class PostController {
 
     @GetMapping("create")
     public String indexCreate(Model model){
-        model.addAttribute("post", new Post());
+        Post post = new Post();
+        Topic topic = new Topic();
+        topic.setTitle("autumn");
+        post.setTopics(Set.of(topic));
+        model.addAttribute("post", post);
         return "posts/post_create";
     }
 

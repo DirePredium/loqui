@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <th:block th:insert="fragments/head :: head"></th:block>
+    <th:block th:insert="~{fragments/head :: head}"></th:block>
 
 </head>
 <body>
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 <div class="container">
 <a th:href="@{/posts}">Posts</a>
 <form th:method="POST" th:action="@{/posts}" th:object="${post}" enctype="multipart/form-data">
@@ -27,7 +27,7 @@
     <input type="submit" id="create-button" value="Create"/>
 </form>
 </div>
-<div th:replace="fragments/footer :: footer"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 <script type="text/javascript">
         // выбираем кнопку "Add file" и поле ввода для файла

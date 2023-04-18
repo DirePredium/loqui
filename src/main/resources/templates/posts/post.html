@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
-    <th:block th:insert="fragments/head :: head"></th:block>
+    <th:block th:insert="~{fragments/head :: head}"></th:block>
 </head>
 <body>
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 <div class="container">
     <h1 th:text="${post.title}" class="border-bottom"></h1>
     <div th:utext="${post.contain}"></div>
@@ -52,7 +52,7 @@
 
 
 </div>
-<div th:replace="fragments/footer :: footer"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 <script>
     // получаем все ссылки "ответить"
