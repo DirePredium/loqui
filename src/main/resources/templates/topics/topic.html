@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+  <th:block th:insert="~{fragments/head :: head}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container">
+  <h1>
+    <span class="badge badge-primary me-2" th:text="${topic.title}"></span>
+  </h1>
+  <p th:text="${'Using posts: '.concat(#sets.size(topic.posts))}"></p>
+</div>
+
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

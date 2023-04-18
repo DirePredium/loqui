@@ -6,6 +6,7 @@ import com.loqui.forum.entity.Topic;
 import com.loqui.forum.entity.User;
 import com.loqui.forum.service.ImageService;
 import com.loqui.forum.service.PostService;
+import com.loqui.forum.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,11 +28,13 @@ public class PostController {
 
     private final PostService postService;
     private final ImageService imageService;
+    private final TopicService topicService;
 
     @Autowired
-    public PostController(PostService postService, ImageService imageService){
+    public PostController(PostService postService, ImageService imageService, TopicService topicService){
         this.postService = postService;
         this.imageService = imageService;
+        this.topicService = topicService;
     }
 
     @GetMapping
@@ -66,9 +69,14 @@ public class PostController {
     @PostMapping()
     public String save(@AuthenticationPrincipal User user,
                        @ModelAttribute("post") Post post,
-                       @RequestParam(value = "file", required = false) MultipartFile[] files) throws IOException {
+                       @RequestParam(value = "file", required = false) MultipartFile[] files,
+                       @RequestParam(value = "topic", required = false) String[] topicTitles) throws IOException {
         post.setDateCreate();
         post.setUser(user);
+        if(topicTitles != null && topicTitles.length != 0){
+            Set<Topic> topics = saveTopicsByTitles(topicTitles);
+            post.setTopics(topics);
+        }
         postService.save(post);
 
         if(files != null && files.length != 0){
@@ -86,6 +94,17 @@ public class PostController {
         }
 
         return "redirect:/posts";
+    }
+
+    private Set<Topic> saveTopicsByTitles(String[] topicTitles) {
+        Set<Topic> topics = new HashSet<>();
+        for (String title : topicTitles) {
+            Topic topic = new Topic();
+            topic.setTitle(title);
+            topicService.save(topic);
+            topics.add(topic);
+        }
+        return topics;
     }
 
     private void saveImageToDB(String resultFileName, Post post){
