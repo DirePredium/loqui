@@ -45,13 +45,13 @@
             <input type="submit" id="create-button" class="btn btn-primary" value="Create"/>
         </form>
     </div>
-    <div th:if="${not #lists.isEmpty(tblUserList)}">
+    <div th:if="${not #lists.isEmpty(post.comments)}">
         <h1>
-            Answer:
+            Answers:
         </h1>
     </div>
     <ul class="list-group list-group-flush">
-        <li class="list-group-item " th:each="reply : ${post.comments}" th:if="${reply.parentComment eq null}">
+        <li class="list-group-item p-0" th:each="reply : ${post.comments}" th:if="${reply.parentComment eq null}">
             <p class="mb-0 pt-3 pb-3" th:text="${reply.text}"></p>
             <div th:replace="fragments/replyTree :: replyTree(${reply.replies})"></div>
         </li>

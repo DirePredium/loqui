@@ -24,4 +24,5 @@ public class Topic {
     private String title;
     @ManyToMany(mappedBy = "topics")
     Set<Post> posts;
+    private String descripion;
 }
