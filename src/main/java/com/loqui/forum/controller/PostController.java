@@ -99,9 +99,12 @@ public class PostController {
     private Set<Topic> saveTopicsByTitles(String[] topicTitles) {
         Set<Topic> topics = new HashSet<>();
         for (String title : topicTitles) {
-            Topic topic = new Topic();
-            topic.setTitle(title);
-            topicService.save(topic);
+            Topic topic = topicService.findByTitle(title);
+            if(topic == null){
+                topic = new Topic();
+                topic.setTitle(title);
+                topicService.save(topic);
+            }
             topics.add(topic);
         }
         return topics;

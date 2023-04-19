@@ -20,6 +20,7 @@ public class Topic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Basic(optional = false)
+    @Column(unique=true)
     private String title;
     @ManyToMany(mappedBy = "topics")
     Set<Post> posts;

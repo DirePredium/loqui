@@ -30,4 +30,12 @@ public class TopicService {
     public Optional<Topic> findById(Long id) {
         return topicRepository.findById(id);
     }
+
+    public Topic findByTitle(String title) {
+        return topicRepository.findByTitle(title);
+    }
+
+    public List<Topic> findByTitleContaining(String title) {
+        return topicRepository.findByTitleContaining(title);
+    }
 }

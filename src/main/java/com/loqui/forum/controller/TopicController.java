@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,8 +25,14 @@ public class TopicController {
     }
 
     @GetMapping
-    public String index(Model model){
-        List<Topic> topics = topicService.findAll();
+    public String index(Model model, @RequestParam(required = false, name = "title") String title){
+        List<Topic> topics = null;
+        if(title == null){
+            topics = topicService.findAll();
+        }
+        if(title != null){
+            topics = topicService.findByTitleContaining(title);
+        }
         model.addAttribute("topics", topics);
         return "topics/topics";
     }
