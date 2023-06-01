@@ -21,9 +21,25 @@
                 </div>
             </div>
             <div class="col-md">
-                <div class="col-md text-end">
-                    <p th:text="${#temporals.format(post.dateCreate, 'dd-MM-yyyy')}"></p>
-                    <a th:href="@{/users/{id}(id=${post.user.id})}" th:text="'@'+${post.user.username}"></a>
+                <div class="col-md">
+                    <div class="col-md text-end">
+                        <p th:text="${#temporals.format(post.dateCreate, 'dd-MM-yyyy')}" class="mb-0"></p>
+                        <a th:href="@{/users/{id}(id=${post.user.id})}" th:text="'@'+${post.user.username}"></a>
+                    </div>
+                    <div class="col-md text-end">
+                        <a th:href="@{/posts/{id}/rating/positive(id=${post.id})}" type="button" class="btn btn-success btn-sm px-2 waves-effect show_login">
+                          <span class="value">
+                            0
+                          </span>
+                            <i class="fas fa-thumbs-up ml-1"></i>
+                        </a>
+                        <a th:href="@{/posts/{id}/rating/negative(id=${post.id})}" type="button" class="btn btn-danger btn-sm px-2 waves-effect show_login">
+                          <span class="value">
+                            0♦♣
+                          </span>
+                            <i class="fas fa-thumbs-down ml-1"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -56,8 +72,6 @@
             <div th:replace="fragments/replyTree :: replyTree(${reply.replies})"></div>
         </li>
     </ul>
-
-
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>

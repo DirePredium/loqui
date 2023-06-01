@@ -1,5 +1,6 @@
 package com.loqui.forum.entity;
 
+import com.loqui.forum.entity.Abstract.RatingEntity;
 import com.loqui.forum.entity.Enum.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -61,4 +62,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy="user")
     private Set<Comment> comments;
 
+    @ManyToMany(mappedBy = "users")
+    private Set<PostRating> postRatings = new HashSet<>();
+
+    @ManyToMany(mappedBy = "users")
+    private Set<CommentRating> commentRatings = new HashSet<>();
 }

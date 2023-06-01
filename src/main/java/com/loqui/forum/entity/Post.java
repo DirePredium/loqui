@@ -31,9 +31,10 @@ public class Post {
     @Column(name = "dateCreate")
     @Setter(AccessLevel.NONE)
     private LocalDate dateCreate;
-    private Rate rate;
     @OneToMany(mappedBy="post")
     private Set<Image> images;
+    @OneToOne(mappedBy="post")
+    private PostRating rating;
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
     private User user;

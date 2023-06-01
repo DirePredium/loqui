@@ -1,10 +1,9 @@
 package com.loqui.forum.controller;
 
-import com.loqui.forum.entity.Image;
-import com.loqui.forum.entity.Post;
-import com.loqui.forum.entity.Topic;
-import com.loqui.forum.entity.User;
+import com.loqui.forum.entity.*;
+import com.loqui.forum.service.Abstract.RatingService;
 import com.loqui.forum.service.ImageService;
+import com.loqui.forum.service.PostRatingService;
 import com.loqui.forum.service.PostService;
 import com.loqui.forum.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +28,14 @@ public class PostController {
     private final PostService postService;
     private final ImageService imageService;
     private final TopicService topicService;
+    private final PostRatingService postRatingService;
 
     @Autowired
-    public PostController(PostService postService, ImageService imageService, TopicService topicService){
+    public PostController(PostService postService, ImageService imageService, TopicService topicService, PostRatingService postRatingService){
         this.postService = postService;
         this.imageService = imageService;
         this.topicService = topicService;
+        this.postRatingService = postRatingService;
     }
 
     @GetMapping
@@ -73,6 +74,7 @@ public class PostController {
                        @RequestParam(value = "topic", required = false) String[] topicTitles) throws IOException {
         post.setDateCreate();
         post.setUser(user);
+        post.setRating(createPostRating(post));
         if(topicTitles != null && topicTitles.length != 0){
             Set<Topic> topics = saveTopicsByTitles(topicTitles);
             post.setTopics(topics);
@@ -94,6 +96,15 @@ public class PostController {
         }
 
         return "redirect:/posts";
+    }
+
+    private PostRating createPostRating(Post post) {
+        PostRating postRating = new PostRating();
+        postRating.setPost(post);
+        postRating.setNegativeRating(0);
+        postRating.setPositiveRating(0);
+        postRatingService.save(postRating);
+        return postRating;
     }
 
     private Set<Topic> saveTopicsByTitles(String[] topicTitles) {

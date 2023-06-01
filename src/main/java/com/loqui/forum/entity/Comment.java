@@ -13,7 +13,6 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {
@@ -38,6 +37,8 @@ public class Comment {
     private Comment parentComment;
     @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> replies = new ArrayList<>();
+    @OneToOne(mappedBy="comment")
+    private CommentRating rating;
 
     public void setDateCreate() {
         this.dateCreate = LocalDate.now();
