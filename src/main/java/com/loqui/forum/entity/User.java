@@ -62,9 +62,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy="user")
     private Set<Comment> comments;
 
-    @ManyToMany(mappedBy = "users")
-    private Set<PostRating> postRatings = new HashSet<>();
+    @OneToMany(mappedBy = "user")
+    private Set<PostRating> postRatings;
 
-    @ManyToMany(mappedBy = "users")
-    private Set<CommentRating> commentRatings = new HashSet<>();
+    @OneToMany(mappedBy = "user")
+    private Set<CommentRating> commentRatings;
 }

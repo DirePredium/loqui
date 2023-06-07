@@ -1,7 +1,7 @@
 package com.loqui.forum.controller;
 
 import com.loqui.forum.entity.*;
-import com.loqui.forum.service.Abstract.RatingService;
+import com.loqui.forum.entity.Enum.RatingEnum;
 import com.loqui.forum.service.ImageService;
 import com.loqui.forum.service.PostRatingService;
 import com.loqui.forum.service.PostService;
@@ -46,7 +46,7 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public String showPost(Model model, @PathVariable("id") Long id){
+    public String showPost(@AuthenticationPrincipal User user, Model model, @PathVariable("id") Long id){
         Optional<Post> optionalPost = postService.findById(id);
 
         if(optionalPost.isEmpty()) {
@@ -54,7 +54,23 @@ public class PostController {
             return "error";
         }
         model.addAttribute("post", optionalPost.get());
+        model.addAttribute("ratedLike", rated(optionalPost.get(), user, RatingEnum.LIKE));
+        model.addAttribute("ratedDislike", rated(optionalPost.get(), user, RatingEnum.DISLIKE));
+        model.addAttribute("countLike", postRatingService.getLikeCount(optionalPost.get()));
+        model.addAttribute("countDislike", postRatingService.getDislikeCount(optionalPost.get()));
         return "posts/post";
+    }
+
+    private boolean rated(Post post, User user, RatingEnum ratingEnum) {
+        return post.getRating().stream()
+                .filter(pr -> pr.getUser().getUsername().equals(user.getUsername()))
+                .anyMatch(pr -> pr.getRating().equals(ratingEnum));
+    }
+
+    private <E> long countObjectsAtList(List<E> list, E object){
+        return list.stream()
+                .filter(object::equals)
+                .count();
     }
 
     @GetMapping("create")
@@ -74,7 +90,6 @@ public class PostController {
                        @RequestParam(value = "topic", required = false) String[] topicTitles) throws IOException {
         post.setDateCreate();
         post.setUser(user);
-        post.setRating(createPostRating(post));
         if(topicTitles != null && topicTitles.length != 0){
             Set<Topic> topics = saveTopicsByTitles(topicTitles);
             post.setTopics(topics);
@@ -96,15 +111,6 @@ public class PostController {
         }
 
         return "redirect:/posts";
-    }
-
-    private PostRating createPostRating(Post post) {
-        PostRating postRating = new PostRating();
-        postRating.setPost(post);
-        postRating.setNegativeRating(0);
-        postRating.setPositiveRating(0);
-        postRatingService.save(postRating);
-        return postRating;
     }
 
     private Set<Topic> saveTopicsByTitles(String[] topicTitles) {

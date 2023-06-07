@@ -1,10 +1,14 @@
 package com.loqui.forum.service.Abstract;
 
 import com.loqui.forum.entity.Abstract.RatingEntity;
+import com.loqui.forum.entity.Enum.RatingEnum;
+import com.loqui.forum.entity.Post;
+import com.loqui.forum.entity.PostRating;
 import com.loqui.forum.entity.User;
 import com.loqui.forum.exception.EntityNotFoundException;
 import com.loqui.forum.repository.Abstract.AbstractRatingRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public abstract class RatingService<E extends RatingEntity> {
@@ -14,22 +18,15 @@ public abstract class RatingService<E extends RatingEntity> {
         this.repository = repository;
     }
 
-    public void addPositiveRating(E ratingEntity) {
-        ratingEntity.setPositiveRating(ratingEntity.getPositiveRating() + 1);
-        repository.save(ratingEntity);
-    }
+    public abstract void changeRating(PostRating postRating, User user, RatingEnum ratingEnum);
 
-    public void addNegativeRating(E ratingEntity) {
-        ratingEntity.setNegativeRating(ratingEntity.getNegativeRating() + 1);
-        repository.save(ratingEntity);
-    }
-
-    public abstract void addPositiveRating(E ratingEntity, User user);
-    public abstract void addNegativeRating(E ratingEntity, User user);
+    public abstract void addRating(Post post, User user, RatingEnum ratingEnum);
 
     public Optional<E> findById(Long id) {
         return repository.findById(id);
     };
+
+
 
     public void save(E rating) {
         repository.save(rating);

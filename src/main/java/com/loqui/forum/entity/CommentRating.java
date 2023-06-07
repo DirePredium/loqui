@@ -17,13 +17,10 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentRating extends RatingEntity {
-    @Basic(optional = false)
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "comment_id")
+    @ManyToOne
+    @JoinColumn(name="comment_id")
     private Comment comment;
-    @ManyToMany
-    @JoinTable(name = "comment_rating_users",
-            joinColumns = @JoinColumn(name = "comment_rating_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> users = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 }

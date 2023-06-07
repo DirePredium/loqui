@@ -27,15 +27,17 @@
                         <a th:href="@{/users/{id}(id=${post.user.id})}" th:text="'@'+${post.user.username}"></a>
                     </div>
                     <div class="col-md text-end">
-                        <a th:href="@{/posts/{id}/rating/positive(id=${post.id})}" type="button" class="btn btn-success btn-sm px-2 waves-effect show_login">
-                          <span class="value">
-                            0
+                        <a th:href="@{/posts/{id}/rating/positive(id=${post.id})}" type="button" class="btn btn-success btn-sm px-2 waves-effect show_login"
+                           th:style="${ratedLike ? 'background-color: blueviolet;' : ''}">
+                          <span class="value" th:text="${countLike}">
+0
                           </span>
                             <i class="fas fa-thumbs-up ml-1"></i>
                         </a>
-                        <a th:href="@{/posts/{id}/rating/negative(id=${post.id})}" type="button" class="btn btn-danger btn-sm px-2 waves-effect show_login">
-                          <span class="value">
-                            0♦♣
+                        <a th:href="@{/posts/{id}/rating/negative(id=${post.id})}" type="button" class="btn btn-danger btn-sm px-2 waves-effect show_login"
+                           th:style="${ratedDislike ? 'background-color: blueviolet;' : ''}">
+                          <span class="value" th:text="${countDislike}">
+0
                           </span>
                             <i class="fas fa-thumbs-down ml-1"></i>
                         </a>

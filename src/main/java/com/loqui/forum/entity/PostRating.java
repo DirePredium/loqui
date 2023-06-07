@@ -17,14 +17,12 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"post_id", "user_id"}))
 public class PostRating extends RatingEntity {
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "post_id")
+    @ManyToOne
+    @JoinColumn(name="post_id")
     private Post post;
-    @ManyToMany
-    @JoinTable(name = "post_rating_users",
-            joinColumns = @JoinColumn(name = "post_rating_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> users = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 }

@@ -37,8 +37,8 @@ public class Comment {
     private Comment parentComment;
     @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> replies = new ArrayList<>();
-    @OneToOne(mappedBy="comment")
-    private CommentRating rating;
+    @OneToMany(mappedBy="comment")
+    private Set<CommentRating> rating;
 
     public void setDateCreate() {
         this.dateCreate = LocalDate.now();
