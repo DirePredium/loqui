@@ -1,5 +1,6 @@
 package com.loqui.forum.entity;
 
+import com.loqui.forum.entity.Enum.RatingEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -43,4 +44,17 @@ public class Comment {
     public void setDateCreate() {
         this.dateCreate = LocalDate.now();
     }
+
+    public long countDislike(){
+        return rating.stream()
+                .filter(r -> r.getRating().equals(RatingEnum.LIKE))
+                .count();
+    }
+
+    public long countLike(){
+        return rating.stream()
+                .filter(r -> r.getRating().equals(RatingEnum.DISLIKE))
+                .count();
+    }
+
 }

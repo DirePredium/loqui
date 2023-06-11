@@ -2,10 +2,7 @@ package com.loqui.forum.controller;
 
 import com.loqui.forum.entity.*;
 import com.loqui.forum.entity.Enum.RatingEnum;
-import com.loqui.forum.service.ImageService;
-import com.loqui.forum.service.PostRatingService;
-import com.loqui.forum.service.PostService;
-import com.loqui.forum.service.TopicService;
+import com.loqui.forum.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,6 +19,7 @@ import java.util.*;
 @RequestMapping("/posts")
 public class PostController {
 
+    private final UserService userService;
     @Value("${upload.path}")
     private String uploadPath;
 
@@ -30,12 +28,14 @@ public class PostController {
     private final TopicService topicService;
     private final PostRatingService postRatingService;
 
+
     @Autowired
-    public PostController(PostService postService, ImageService imageService, TopicService topicService, PostRatingService postRatingService){
+    public PostController(PostService postService, ImageService imageService, TopicService topicService, PostRatingService postRatingService, UserService userService){
         this.postService = postService;
         this.imageService = imageService;
         this.topicService = topicService;
         this.postRatingService = postRatingService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -54,10 +54,13 @@ public class PostController {
             return "error";
         }
         model.addAttribute("post", optionalPost.get());
+
+        user = userService.findByUsername(user.getUsername());
+
+        model.addAttribute("user", user);
+
         model.addAttribute("ratedLike", rated(optionalPost.get(), user, RatingEnum.LIKE));
         model.addAttribute("ratedDislike", rated(optionalPost.get(), user, RatingEnum.DISLIKE));
-        model.addAttribute("countLike", postRatingService.getLikeCount(optionalPost.get()));
-        model.addAttribute("countDislike", postRatingService.getDislikeCount(optionalPost.get()));
         return "posts/post";
     }
 

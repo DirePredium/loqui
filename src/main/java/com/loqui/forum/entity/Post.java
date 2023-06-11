@@ -1,5 +1,6 @@
 package com.loqui.forum.entity;
 
+import com.loqui.forum.entity.Enum.RatingEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -50,4 +51,17 @@ public class Post {
     }
     @OneToMany(mappedBy = "post")
     private Set<Comment> comments;
+
+    public long countLike(){
+        return rating.stream()
+                .filter(r -> r.getRating().equals(RatingEnum.LIKE))
+                .count();
+    }
+
+    public long countDislike(){
+        return rating.stream()
+                .filter(r -> r.getRating().equals(RatingEnum.DISLIKE))
+                .count();
+    }
+
 }
