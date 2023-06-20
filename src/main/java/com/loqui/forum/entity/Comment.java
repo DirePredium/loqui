@@ -45,16 +45,4 @@ public class Comment {
         this.dateCreate = LocalDate.now();
     }
 
-    public long countDislike(){
-        return rating.stream()
-                .filter(r -> r.getRating().equals(RatingEnum.LIKE))
-                .count();
-    }
-
-    public long countLike(){
-        return rating.stream()
-                .filter(r -> r.getRating().equals(RatingEnum.DISLIKE))
-                .count();
-    }
-
 }

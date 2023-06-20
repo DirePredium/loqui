@@ -26,15 +26,13 @@ public class PostController {
     private final PostService postService;
     private final ImageService imageService;
     private final TopicService topicService;
-    private final PostRatingService postRatingService;
 
 
     @Autowired
-    public PostController(PostService postService, ImageService imageService, TopicService topicService, PostRatingService postRatingService, UserService userService){
+    public PostController(PostService postService, ImageService imageService, TopicService topicService, UserService userService){
         this.postService = postService;
         this.imageService = imageService;
         this.topicService = topicService;
-        this.postRatingService = postRatingService;
         this.userService = userService;
     }
 
@@ -59,21 +57,8 @@ public class PostController {
 
         model.addAttribute("user", user);
 
-        model.addAttribute("ratedLike", rated(optionalPost.get(), user, RatingEnum.LIKE));
-        model.addAttribute("ratedDislike", rated(optionalPost.get(), user, RatingEnum.DISLIKE));
+        model.addAttribute("enumRating", RatingEnum.class);
         return "posts/post";
-    }
-
-    private boolean rated(Post post, User user, RatingEnum ratingEnum) {
-        return post.getRating().stream()
-                .filter(pr -> pr.getUser().getUsername().equals(user.getUsername()))
-                .anyMatch(pr -> pr.getRating().equals(ratingEnum));
-    }
-
-    private <E> long countObjectsAtList(List<E> list, E object){
-        return list.stream()
-                .filter(object::equals)
-                .count();
     }
 
     @GetMapping("create")
