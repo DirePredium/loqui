@@ -1,5 +1,6 @@
 package com.loqui.forum.entity;
 
+import com.loqui.forum.entity.Abstract.Rating;
 import com.loqui.forum.entity.Abstract.RatingEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"post_id", "user_id"}))
-public class PostRating extends RatingEntity {
+public class PostRating extends Rating {
     @ManyToOne
     @JoinColumn(name="post_id")
     private Post post;

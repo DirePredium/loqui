@@ -1,5 +1,6 @@
 package com.loqui.forum.entity;
 
+import com.loqui.forum.entity.Abstract.RatingEntity;
 import com.loqui.forum.entity.Enum.RatingEnum;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,7 +17,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment {
+public class Comment extends RatingEntity<PostRating> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

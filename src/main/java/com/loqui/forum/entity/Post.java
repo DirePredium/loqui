@@ -1,13 +1,9 @@
 package com.loqui.forum.entity;
 
-import com.loqui.forum.entity.Enum.RatingEnum;
+import com.loqui.forum.entity.Abstract.RatingEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
-import lombok.AccessLevel;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -19,10 +15,7 @@ import java.util.Set;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Post extends RatingEntity<PostRating> {
     @Basic(optional = false)
     private String title;
     @Basic(optional = false)

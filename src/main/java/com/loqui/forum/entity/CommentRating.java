@@ -1,5 +1,6 @@
 package com.loqui.forum.entity;
 
+import com.loqui.forum.entity.Abstract.Rating;
 import com.loqui.forum.entity.Abstract.RatingEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommentRating extends RatingEntity {
+public class CommentRating extends Rating {
     @ManyToOne
     @JoinColumn(name="comment_id")
     private Comment comment;

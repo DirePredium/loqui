@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class PostRatingService extends RatingService<PostRating> {
+public class PostRatingService extends RatingService<PostRating, Post> {
     private final PostRatingRepository postRatingRepository;
     public PostRatingService(PostRatingRepository repository) {
         super(repository);
