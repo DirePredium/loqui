@@ -12,7 +12,7 @@ import com.loqui.forum.repository.Abstract.AbstractRatingRepository;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class RatingService<E extends Rating, E2 extends RatingEntity<E>> {
+public abstract class RatingService<E extends Rating, E2 extends RatingEntity> {
     protected final AbstractRatingRepository<E, Long> repository;
 
     public RatingService(AbstractRatingRepository<E, Long> repository) {

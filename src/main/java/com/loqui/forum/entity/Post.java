@@ -15,7 +15,7 @@ import java.util.Set;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post extends RatingEntity<PostRating> {
+public class Post extends RatingEntity {
     @Basic(optional = false)
     private String title;
     @Basic(optional = false)

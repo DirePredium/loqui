@@ -71,6 +71,25 @@
     <ul class="list-group list-group-flush">
         <li class="list-group-item p-0" th:each="reply : ${post.comments}" th:if="${reply.parentComment eq null}">
             <p class="mb-0 pt-3 pb-3" th:text="${reply.text}"></p>
+            <p th:text="${#temporals.format(reply.dateCreate, 'dd-MM-yyyy')}"></p>
+            <a th:href="@{/users/{id}(id=${reply.user.id})}" th:text="'@'+${reply.user.username}"></a>
+            <div class="col-md text-end">
+                <a th:href="@{/comments/{id}/rating/positive?postId={postId}(id=${reply.id}, postId=${post.id})}" type="button" class="btn btn-success btn-sm px-2 waves-effect show_login"
+                   th:style="${#ratingUtil.isRatedCommentByUser(reply, user, enumRating.LIKE)} ? 'background-color: blueviolet' : ''">
+                          <span class="value" th:text="${#ratingUtil.countCommentRating(reply, enumRating.LIKE)}">
+0
+                          </span>
+                    <i class="fas fa-thumbs-up ml-1"></i>
+                </a>
+                <a th:href="@{/comments/{id}/rating/negative?postId={postId}(id=${reply.id}, postId=${post.id})}" type="button" class="btn btn-danger btn-sm px-2 waves-effect show_login"
+                   th:style="${#ratingUtil.isRatedCommentByUser(reply, user, enumRating.DISLIKE)} ? 'background-color: blueviolet' : ''">
+                          <span class="value" th:text="${#ratingUtil.countCommentRating(post, enumRating.DISLIKE)}">
+0
+                          </span>
+                    <i class="fas fa-thumbs-down ml-1"></i>
+                </a>
+            </div>
+
             <div th:replace="fragments/replyTree :: replyTree(${reply.replies})"></div>
         </li>
     </ul>
