@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <th:block th:insert="~{fragments/head :: head}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container mt-3">
+    <div class="search_user">
+        <div>
+            <form th:method="GET" th:action="@{topics}" class="row gx-1 align-items-center">
+                <label for="title">Search topic:</label>
+                <div class="col-auto">
+                    <input type="text" id="title" name="title" class="form-control">
+                </div>
+                <div class="col-auto">
+                    <input type="submit" value="Search" class="btn btn-primary"/>
+                </div>
+            </form>
+        </div>
+        <div th:each="topic : ${topics}">
+            <h3>
+                <a th:href="@{/topics/{id}(id=${topic.id})}">
+                    <span class="badge badge-primary me-2" th:text="${topic.title}"></span>
+                </a>
+            </h3>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

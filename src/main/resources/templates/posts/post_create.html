@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <th:block th:insert="~{fragments/head :: head}"></th:block>
+
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div class="container">
+    <a th:href="@{/posts}">Posts</a>
+    <form th:method="POST" th:action="@{/posts}" th:object="${post}" enctype="multipart/form-data">
+        <input hidden="true" th:field="*{id}" id="id"/>
+
+        <label for="title">Enter title: </label>
+        <input required type="text" th:field="*{title}" id="title"/>
+        <br/>
+        <label for="contain">Enter contain: </label>
+        <textarea style="resize:none" class="form-control" id="contain" th:field="*{contain}"
+                  oninput="autoHeight(this)"></textarea>
+        <br/>
+        <button name="button" type="button" id="add-file-button"  class="btn btn-secondary">Add file</button>
+        <br/>
+
+        <div id="file-input-container"></div>
+        <div id="topics-container" class="mt-4"></div>
+
+        <button type="button" id="add-topic-btn" class="btn btn-secondary">Add topic</button>
+        <button type="button" id="remove-topic-btn" class="btn btn-secondary">Remove last topic</button>
+
+        <br/>
+
+
+        <input type="submit" id="create-button" class="btn btn-primary" value="Create"/>
+    </form>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+<script type="text/javascript" th:inline="javascript">
+    function autoHeight(element) {
+        element.style.height = 'auto';
+        element.style.height = element.scrollHeight + 'px';
+    }
+    const addTopicBtn = document.getElementById('add-topic-btn');
+    const removeTopicBtn = document.getElementById('remove-topic-btn');
+    const topicsContainer = document.getElementById('topics-container');
+
+    addTopicBtn.addEventListener('click', () => {
+      const newTopicInput = document.createElement('input');
+      newTopicInput.type = 'text';
+      newTopicInput.name = 'topic';
+      newTopicInput.required = true;
+
+      topicsContainer.appendChild(newTopicInput);
+    });
+
+    removeTopicBtn.addEventListener('click', () => {
+      const topicInputs = topicsContainer.querySelectorAll('input[type="text"]');
+      if (topicInputs.length > 0) {
+        topicsContainer.removeChild(topicInputs[topicInputs.length - 1]);
+      }
+    });
+</script>
+
+<script type="text/javascript">
+    const addFileButton = document.querySelector('#add-file-button');
+    const fileInputContainer = document.querySelector('#file-input-container');
+
+    addFileButton.addEventListener('click', () => {
+      const newFileInput = document.createElement('input');
+      newFileInput.type = 'file';
+      newFileInput.name = 'file';
+      newFileInput.className = 'form-control';
+
+      fileInputContainer.appendChild(newFileInput);
+      const br = document.createElement("br");
+
+      const removeFileButton = document.createElement('button');
+      removeFileButton.type = 'button';
+      removeFileButton.className = 'btn-close';
+      removeFileButton.setAttribute('aria-label', 'Close');
+      removeFileButton.addEventListener('click', () => {
+        fileInputContainer.removeChild(newFileInput);
+        fileInputContainer.removeChild(removeFileButton);
+        fileInputContainer.removeChild(br);
+      });
+      fileInputContainer.appendChild(removeFileButton);
+      fileInputContainer.appendChild(br);
+    });
+
+    const createButton = document.querySelector('#create-button');
+
+    createButton.addEventListener('click', () => {
+      const fileInputs = document.querySelectorAll('input[type="file"]');
+
+      let isAtLeastOneFileSelected = false;
+      fileInputs.forEach((fileInput) => {
+        if (fileInput.files.length > 0) {
+          isAtLeastOneFileSelected = true;
+        }
+      });
+
+      if (!isAtLeastOneFileSelected && fileInputContainer.children.length != 0) {
+        alert('Please select at least one file.');
+        event.preventDefault();
+      }
+    });
+</script>
+</html>

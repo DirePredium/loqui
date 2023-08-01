@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:insert="~{fragments/head :: head}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div class="container">
+    <a th:href="@{/admin/users}">Users</a>
+    <form th:method="POST" th:action="@{/admin/users}" th:object="${user}">
+        <input hidden="true" th:field="*{id}" id="id"/>
+
+        <label for="username">Enter username: </label>
+        <input type="text" th:field="*{username}" id="username"/>
+        <br/>
+
+        <label for="password">Enter password: </label>
+        <input type="text" th:field="*{password}" id="password"/>
+        <br/>
+
+        <label for="enabled">Enabled:</label>
+        <input type="checkbox" id="enabled" name="enabled" th:checked="${user.active}" th:field="*{active}"/>
+        <br/>
+
+        <label for="roles">Enter role: </label>
+        <select th:field="*{roles}" multiple id="roles">
+            <option th:each="role : ${roles}"
+                    th:value="${role.name}"
+                    th:selected="${user.roles.contains(role)}">
+                <span th:text="${role.name}"></span>
+            </option>
+        </select>
+        <br/>
+
+        <input type="submit" value="Update"/>
+    </form>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

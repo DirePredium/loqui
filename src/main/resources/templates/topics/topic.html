@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+  <th:block th:insert="~{fragments/head :: head}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container mt-3">
+  <h1>
+    <span class="badge badge-primary me-2" th:text="${topic.title}"></span>
+  </h1>
+  <p th:text="${'Using posts: '.concat(#sets.size(topic.posts))}"></p>
+
+  <div th:if="${topic.descripion}">
+    <h4>Descripion:</h4>
+    <p th:text="${topic.descripion}"></p>
+  </div>
+
+  <div th:if="${not #lists.isEmpty(topic.posts)}" class="mt-4">
+    <h4>
+      Using:
+    </h4>
+  </div>
+  <div class="post border-top p-3" th:each="post : ${topic.posts}">
+    <a th:href="@{/posts/{id}(id=${post.id})}"><h4 th:text="${post.title}"></h4></a>
+    <div th:with="maxContainCharacters=50">
+      <div th:utext="${#strings.length(post.contain) > maxContainCharacters ? #strings.substring(post.contain,0,maxContainCharacters) + '...' : post.contain}"></div>
+    </div>
+  </div>
+</div>
+
+
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
